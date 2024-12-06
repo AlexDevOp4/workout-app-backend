@@ -75,11 +75,4 @@ jest-test-results.json
 
 # Git specific
 *.orig
-<<<<<<< HEAD
 *.patch
-
-# Firebase Admin SDK file
-workout-app-backend/workout-app-backend-ca13a-firebase-adminsdk-9kju4-5f9be2cc4f.json
-=======
-*.patch
->>>>>>> 2472996 (added firebase auth)
