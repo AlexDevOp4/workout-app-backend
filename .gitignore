@@ -1,0 +1,78 @@
+# Node Modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+jspm_packages/
+
+# Build directories
+dist/
+build/
+out/
+
+# Temporary directories and files
+temp/
+tmp/
+*.tmp
+
+# Coverage directories and reports
+coverage/
+.nyc_output/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Next.js build output (if applicable)
+.next/
+.vercel/
+.vite/
+
+# Parcel cache
+.cache/
+
+# Storybook
+storybook-static/
+
+# VSCode settings
+.vscode/
+*.code-workspace
+
+# MacOS system files
+.DS_Store
+
+# npm package lock files (if using yarn)
+package-lock.json
+yarn.lock
+.pnpm-debug.log
+
+# IDE-specific files
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+
+# Lint and format output
+.eslintcache
+.prettier.cache
+
+# Optional npm cache directory
+.npm/
+
+# Test coverage directories
+.jest/
+jest-test-results.json
+
+# TypeScript
+*.tsbuildinfo
+
+# Git specific
+*.orig
+*.patch
