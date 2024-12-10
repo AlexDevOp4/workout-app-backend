@@ -6,9 +6,14 @@ import {
   signOut,
 } from "firebase/auth";
 import firebaseApp from "../firebase/index.js";
+import admin from "firebase-admin";
 
 const auth = getAuth(firebaseApp);
 const router = express.Router();
+
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+});
 
 router.post("/signup", async (req, res) => {
   const { email, password } = req.body;
@@ -33,10 +38,11 @@ router.post("/signin", async (req, res) => {
 router.post("/signout", async (req, res) => {
   try {
     await signOut(auth);
-    res.status(200).json({ message: "Signed out successfully" });
+    res.status(200).json({ message: "Signed out successfully"});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
+
 
 export default router;
