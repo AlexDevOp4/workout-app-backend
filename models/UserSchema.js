@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema(
       type: String,
     },
     firebaseUID: {
-      type: String
+      type: String,
     },
     role: {
       type: String,
@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema(
       type: Date,
       default: new Date(),
     },
-  },
+  }
   // {
   //   toJSON: {
   //     // include any virtual properties when data is requested

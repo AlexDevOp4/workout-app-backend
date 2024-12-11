@@ -26,6 +26,26 @@ export const getUserbyId = async (req, res) => {
   }
 };
 
+export const getUserbyFirebaseUID = async (req, res) => {
+  const { firebaseUID } = req.query; // Access query parameter
+  if (!firebaseUID) {
+    return res
+      .status(400)
+      .json({ error: "firebaseUID query parameter is required" });
+  }
+
+  try {
+    const user = await UserSchema.findOne({ firebaseUID });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.json(user);
+  } catch (err) {
+    console.error("Error fetching user:", err);
+    return res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
 // Create an user and assign an existing role to that user
 export const createUser = async (req, res) => {
   const { role, first_name, last_name, trainerId, firebaseUID } = req.body;

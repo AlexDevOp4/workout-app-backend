@@ -30,7 +30,7 @@ router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await signInWithEmailAndPassword(auth, email, password);
-    const userData = [{ email: user.user.email, uid: user.user.uid }];
+    const userData = { email: user.user.email, uid: user.user.uid };
     return res.status(200).json(userData);
   } catch (error) {
     return res.status(400).json({ error: error.message });
