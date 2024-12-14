@@ -20,7 +20,7 @@ router.post("/signup", async (req, res) => {
   try {
     const user = await createUserWithEmailAndPassword(auth, email, password);
     const userData = [{ email: user.user.email, uid: user.user.uid }];
-    return res.status(200).json(userData);
+    return res.status(201).json(userData);
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -31,7 +31,7 @@ router.post("/signin", async (req, res) => {
   try {
     const user = await signInWithEmailAndPassword(auth, email, password);
     const userData = { email: user.user.email, uid: user.user.uid };
-    return res.status(200).json(userData);
+    return res.status(201).json(userData);
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }

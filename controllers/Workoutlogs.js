@@ -4,7 +4,7 @@ import WorkoutLogSchema from "../models/WorkoutLogSchema.js";
 export const getWorkoutLogs = async (req, res) => {
   try {
     const workoutLogs = await WorkoutLogSchema.find({})
-      .populate("clientId", "first_name last_name role",) // Populate client details
+      .populate("clientId", "first_name last_name role") // Populate client details
       .populate("workoutId", "programName weeks"); // Populate workout details
     return res.json(workoutLogs);
   } catch (err) {
@@ -17,13 +17,16 @@ export const getWorkoutLogs = async (req, res) => {
 export const getWorkoutLogById = async (req, res) => {
   const id = req.params.id;
   try {
-    const workoutLog = await WorkoutLogSchema.findById(id)
-      .populate("clientId", "first_name last_name role") // Populate client details
-      .populate("workoutId", "programName weeks"); // Populate workout details
+    const workoutLog = await WorkoutLogSchema.findOne({ clientId: id }) // Populate client details
+      .populate("workoutId", "-_id weeks programName createdAt"); // Populate workout details
     if (!workoutLog) {
       return res.status(404).json({ err: "Workout log not found" });
     }
-    return res.json(workoutLog);
+    const sortedData = workoutLog.workoutId.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    console.log(sortedData);
+    return res.json(sortedData);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ err: "Something went wrong" });

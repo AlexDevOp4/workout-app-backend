@@ -1,11 +1,46 @@
 import mongoose from "mongoose";
 import { ExerciseSchema } from "./ExerciseSchema.js"; // Import only the schema
 
+const exerciseSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    weight: { type: Number, required: true },
+    sets: { type: Number, required: true },
+    targetReps: {
+      type: Number,
+      required: true,
+    },
+    actualReps: {
+      type: [Number],
+    },
+    rpe: {
+      type: Number,
+    },
+    rest: {
+      type: Number,
+    },
+    createdAt: {
+      type: Date,
+      default: new Date(),
+    },
+    updatedAt: {
+      type: Date,
+      default: new Date(),
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 // Day Subdocument Schema
-const daySchema = new mongoose.Schema({
-  dayNumber: { type: Number, required: true },
-  exercises: [ExerciseSchema], // Use the ExerciseSchema here
-});
+const daySchema = new mongoose.Schema(
+  {
+    dayNumber: { type: Number, required: true },
+    exercises: [exerciseSchema], // Use the ExerciseSchema here
+  },
+  { _id: false }
+);
 
 // Week Subdocument Schema
 const weekSchema = new mongoose.Schema({

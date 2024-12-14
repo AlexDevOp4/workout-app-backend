@@ -19,7 +19,7 @@ export const getUserbyId = async (req, res) => {
   const id = req.params.id;
   try {
     const user = await UserSchema.findById(id);
-    return res.json(user);
+    return res.status(201).json(user);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ err: "Something went wrong" });
@@ -39,7 +39,7 @@ export const getUserbyFirebaseUID = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    return res.json(user);
+    return res.status(201).json(user);
   } catch (err) {
     console.error("Error fetching user:", err);
     return res.status(500).json({ error: "Something went wrong" });
@@ -58,12 +58,10 @@ export const createUser = async (req, res) => {
       trainerId,
       firebaseUID,
     });
-    const updateUser = await UserSchema.find({});
-    return res.json({ user, updateUser });
+    return res.status(201).json({ user });
   } catch (err) {
     console.log(err, "Something went wrong");
-
-    return res.json(err);
+    return res.status(400).json(err);
   }
 };
 

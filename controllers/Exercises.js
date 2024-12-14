@@ -22,13 +22,15 @@ export const getExercisebyId = async (req, res) => {
 };
 
 export const createExercises = async (req, res) => {
-  const { name, bodyPart, videoLink } = req.body;
+  const { name, bodyPart, videoLink, targetReps, sets } = req.body;
 
   try {
     const exercise = await ExerciseModel.create({
       name,
       bodyPart,
       videoLink,
+      targetReps,
+      sets,
     });
     const updateExercise = await ExerciseModel.find({});
     return res.json({ exercise, updateExercise });

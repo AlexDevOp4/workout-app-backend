@@ -15,16 +15,6 @@ const exerciseSchema = new Schema(
     videoLink: {
       type: String,
     },
-    targetReps: {
-      type: Number,
-      required: true,
-    },
-    actualReps: {
-      type: [Number],
-    },
-    rpe: {
-      type: Number,
-    },
     createdAt: {
       type: Date,
       default: new Date(),
