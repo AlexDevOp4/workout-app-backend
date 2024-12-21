@@ -48,16 +48,48 @@ export const getUserbyFirebaseUID = async (req, res) => {
 
 // Create an user and assign an existing role to that user
 export const createUser = async (req, res) => {
-  const { role, first_name, last_name, trainerId, firebaseUID } = req.body;
+  const { role, email, first_name, last_name, trainerId, firebaseUID } =
+    req.body;
 
   try {
     const user = await UserSchema.create({
       first_name,
       last_name,
+      email,
       role,
       trainerId,
       firebaseUID,
     });
+    return res.status(201).json({ user });
+  } catch (err) {
+    console.log(err, "Something went wrong");
+    return res.status(400).json(err);
+  }
+};
+
+// Update User
+export const editUser = async (req, res) => {
+  const userId = req.params.userId;
+  const { role, email, first_name, last_name, trainerId, firebaseUID } =
+    req.body;
+
+  try {
+    const user = await UserSchema.findOneAndUpdate(
+      { user_id: userId },
+      {
+        first_name,
+        last_name,
+        email,
+        role,
+        trainerId,
+        firebaseUID,
+      }
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
     return res.status(201).json({ user });
   } catch (err) {
     console.log(err, "Something went wrong");

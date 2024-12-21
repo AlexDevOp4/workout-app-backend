@@ -18,7 +18,7 @@ export const getWorkoutLogById = async (req, res) => {
   const id = req.params.id;
   try {
     const workoutLog = await WorkoutLogSchema.findOne({ clientId: id }) // Populate client details
-      .populate("workoutId", "-_id weeks programName createdAt"); // Populate workout details
+      .populate("workoutId", "id weeks programName createdAt"); // Populate workout details
     if (!workoutLog) {
       return res.status(404).json({ err: "Workout log not found" });
     }
