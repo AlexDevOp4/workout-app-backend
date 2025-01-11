@@ -1,6 +1,7 @@
-import mongoose from "mongoose"; // Import only the schema
+import mongoose from "mongoose";
 import Joi from "joi";
 import JoiDate from "@joi/date"; // For Joi date validation
+import WorkoutLogSchema from "./WorkoutLogSchema.js";
 
 const JoiExtended = Joi.extend(JoiDate);
 
@@ -16,7 +17,7 @@ const exerciseSchema = new mongoose.Schema(
     rest: { type: Number },
   },
   {
-    timestamps: true, // Automatically manages createdAt and updatedAt
+    timestamps: true,
   }
 );
 
@@ -24,7 +25,7 @@ const exerciseSchema = new mongoose.Schema(
 const daySchema = new mongoose.Schema(
   {
     dayNumber: { type: Number, required: true },
-    exercises: [exerciseSchema], // Use the ExerciseSchema here
+    exercises: [exerciseSchema],
   },
   { _id: false }
 );
@@ -32,7 +33,7 @@ const daySchema = new mongoose.Schema(
 // Week Subdocument Schema
 const weekSchema = new mongoose.Schema({
   weekNumber: { type: Number, required: true },
-  days: [daySchema], // Array of days
+  days: [daySchema],
 });
 
 // Workout Program Schema
@@ -44,13 +45,31 @@ const workoutProgramSchema = new mongoose.Schema(
       required: true,
     },
     programName: { type: String, required: true },
-    weeks: [weekSchema], // Array of weeks
-    currentWeek: { type: Number, default: 1 }, // Track the current week
-    startDate: { type: Date, required: true }, // Track when the program started
-    completed: { type: Boolean, default: false }, // Mark if the program is completed
+    weeks: [weekSchema],
+    currentWeek: { type: Number, default: 1 },
+    currentDay: { type: Number, default: 1 },
+    startDate: { type: Date, required: true },
+    completed: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
+
+// Middleware to handle transfer to WorkoutLogSchema
+workoutProgramSchema.pre("save", async function (next) {
+  if (this.completed && this.isModified("completed")) {
+    try {
+      const workoutLogEntry = new WorkoutLogSchema({
+        clientId: this.clientId,
+        workoutId: this._id,
+      });
+      await workoutLogEntry.save();
+      console.log("Workout transferred to WorkoutLog");
+    } catch (error) {
+      console.error("Error transferring workout to WorkoutLog:", error);
+    }
+  }
+  next();
+});
 
 // Joi Validation Schema
 const exerciseJoiSchema = JoiExtended.object({
@@ -77,8 +96,9 @@ export const workoutProgramJoiSchema = JoiExtended.object({
   clientId: JoiExtended.string().required(),
   programName: JoiExtended.string().required(),
   weeks: JoiExtended.array().items(weekJoiSchema).required(),
-  currentWeek: JoiExtended.number().default(1), // Defaults can be added explicitly if needed
-  startDate: JoiExtended.date().format("YYYY-MM-DD").required(), // Using Joi-date for formatting
+  currentWeek: JoiExtended.number().default(1),
+  currentDay: JoiExtended.number().default(1),
+  startDate: JoiExtended.date().format("YYYY-MM-DD").required(),
   completed: JoiExtended.boolean().default(false),
 });
 

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import WorkoutSchema from "./WorkoutSchema.js";
+
 const { Schema } = mongoose;
 
 // Define the schema
@@ -10,18 +10,20 @@ const workoutLogSchema = new Schema(
       ref: "Users",
       required: true,
     },
-    workoutId: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Workouts",
-      required: true,
-    }],
+    workoutId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Workouts",
+        required: true,
+      },
+    ],
     createdAt: {
       type: Date,
-      default: new Date(),
+      default: Date.now,
     },
     updatedAt: {
       type: Date,
-      default: new Date(),
+      default: Date.now,
     },
   },
   {
@@ -29,7 +31,6 @@ const workoutLogSchema = new Schema(
   }
 );
 
-// Export the schema and the model
-const WorkoutLogSchema = mongoose.model("Workout_Logs", workoutLogSchema); // Export the model
+const WorkoutLogSchema = mongoose.model("Workout_Logs", workoutLogSchema);
 
 export default WorkoutLogSchema;
