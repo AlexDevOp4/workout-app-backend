@@ -1,6 +1,6 @@
 # Node Modules
 node_modules/
-firebase/service-account.js
+firebase/service-account.json
 # Logs
 logs/
 *.log
@@ -75,8 +75,4 @@ jest-test-results.json
 
 # Git specific
 *.orig
-<<<<<<< HEAD
 *.patch
-=======
-*.patch
->>>>>>> 2472996 (added firebase auth)

@@ -8,13 +8,17 @@ import {
 } from "firebase/auth";
 import firebaseApp from "../firebase/index.js";
 import admin from "firebase-admin";
-import serviceAccount from "../firebase/service-account.js";
+import { readFileSync } from "fs";
 
 const auth = getAuth(firebaseApp);
 const router = express.Router();
 
+const credentials = JSON.parse(
+  Buffer.from(process.env.FIREBASE_CREDENTIALS, "base64").toString("utf-8")
+);
+
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(credentials),
 });
 
 router.post("/signup", async (req, res) => {
