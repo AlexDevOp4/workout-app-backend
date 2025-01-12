@@ -12,13 +12,26 @@ import WorkoutRoutes from "./routes/workout.js";
 import WorkoutLogRoutes from "./routes/workoutLog.js";
 
 const app = express();
-const {MONGO_DB, MONGO_USER, MONGO_PASSWORD} = process.env;
+const { MONGO_DB, MONGO_USER, MONGO_PASSWORD } = process.env;
 const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@trainer-dashboard-clust.uo9tk.mongodb.net/${MONGO_DB}?retryWrites=true&w=majority&appName=trainer-dashboard-cluster`;
 mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 10000,
+    tls: true,
+    socketTimeoutMS: 30000,
+  })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
-
+mongoose.set("debug", true);
+mongoose.connection.on("connected", async () => {
+  const collections = await mongoose.connection.db.listCollections().toArray();
+  console.log(
+    "Collections:",
+    collections.map((col) => col.name)
+  );
+});
 app.use(cors());
 
 app.use(express.json());
@@ -26,7 +39,7 @@ app.use(logger);
 const PORT = config.port;
 
 app.use("/auth", authRoutes);
-app.use("/users", UserRoutes );
+app.use("/users", UserRoutes);
 app.use("/exercises", ExerciseRoutes);
 app.use("/workouts", WorkoutRoutes);
 app.use("/workoutlogs", WorkoutLogRoutes);

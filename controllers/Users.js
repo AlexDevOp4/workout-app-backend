@@ -1,5 +1,5 @@
 import UserSchema from "../models/UserSchema.js";
-
+import mongoose from "mongoose";
 // Get Routes
 export const getUsers = async (req, res) => {
   try {
@@ -16,13 +16,23 @@ export const getUsers = async (req, res) => {
 };
 
 export const getUserbyId = async (req, res) => {
+  console.log("Received request for user:", req.params.id);
   const id = req.params.id;
+
+  // Validate the ID format
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "Invalid user ID format" });
+  }
+
   try {
     const user = await UserSchema.findById(id);
-    return res.status(201).json(user);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(201).json(user);
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({ err: "Something went wrong" });
+    console.error("Error fetching user:", err);
+    res.status(500).json({ error: "Something went wrong" });
   }
 };
 
