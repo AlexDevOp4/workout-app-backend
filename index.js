@@ -24,14 +24,6 @@ mongoose
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
-mongoose.set("debug", true);
-mongoose.connection.on("connected", async () => {
-  const collections = await mongoose.connection.db.listCollections().toArray();
-  console.log(
-    "Collections:",
-    collections.map((col) => col.name)
-  );
-});
 app.use(cors());
 
 app.use(express.json());

@@ -16,7 +16,6 @@ export const getUsers = async (req, res) => {
 };
 
 export const getUserbyId = async (req, res) => {
-  console.log("Received request for user:", req.params.id);
   const id = req.params.id;
 
   // Validate the ID format

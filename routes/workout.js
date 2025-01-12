@@ -24,7 +24,7 @@ const router = express.Router();
 router.get("/", getClientWorkoutPrograms);
 router.get("/uncompleted/:clientId", getUnCompletedWorkouts);
 router.get("/transfer", transferCompletedWorkouts);
-router.get("/", getWorkoutPrograms);
+router.get("/all-workouts", getWorkoutPrograms);
 router.post("/:id", updateActualReps);
 router.get("/:id", getWorkoutProgramById);
 router.get("/:workoutId/weeks/:weekNumber/days/:dayNumber", getWorkoutByDayAndWeek);
