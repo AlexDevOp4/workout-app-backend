@@ -10,6 +10,8 @@ import UserRoutes from "./routes/user.js";
 import ExerciseRoutes from "./routes/exercise.js";
 import WorkoutRoutes from "./routes/workout.js";
 import WorkoutLogRoutes from "./routes/workoutLog.js";
+import VideoRoutes from "./routes/videos.js";
+import multer from "multer";
 
 const app = express();
 const { MONGO_DB, MONGO_USER, MONGO_PASSWORD } = process.env;
@@ -24,7 +26,14 @@ mongoose
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
-app.use(cors());
+
+const corsOptions = {
+  origin: "http://localhost:5173", // Replace with your frontend origin
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(logger);
@@ -35,6 +44,7 @@ app.use("/users", UserRoutes);
 app.use("/exercises", ExerciseRoutes);
 app.use("/workouts", WorkoutRoutes);
 app.use("/workoutlogs", WorkoutLogRoutes);
+app.use('/videos', VideoRoutes);
 
 app.use(errorHandler);
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
