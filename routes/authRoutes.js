@@ -48,6 +48,8 @@ router.post("/signin", async (req, res) => {
     );
     const user = userCredential.user;
 
+    console.log(user)
+
     // 🔹 Get tokens
     const idToken = await user.getIdToken(); // Short-lived token (1 hour)
     const refreshToken = user.stsTokenManager.refreshToken;
