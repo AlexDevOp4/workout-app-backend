@@ -48,8 +48,6 @@ router.post("/signin", async (req, res) => {
     );
     const user = userCredential.user;
 
-    console.log(user)
-
     // 🔹 Get tokens
     const idToken = await user.getIdToken(); // Short-lived token (1 hour)
     const refreshToken = user.stsTokenManager.refreshToken;
@@ -62,7 +60,7 @@ router.post("/signin", async (req, res) => {
     });
 
     // 🔹 Fetch user details from MongoDB using Firebase UID
-    const userData = await UserSchema.findOne({ firebaseUid: user.uid });
+    const userData = await UserSchema.findOne({ firebaseUID: user.uid });
 
     if (!userData) {
       return res.status(404).json({ error: "User not found in database" });
@@ -75,9 +73,9 @@ router.post("/signin", async (req, res) => {
         firebaseUid: user.uid,
         email: user.email,
         displayName: user.displayName,
-        mongoId: userData._id, // User ID from MongoDB
-        role: userData.role, // Example: 'trainer' or 'client'
-        profilePic: userData.profilePic, // Additional data stored in MongoDB
+        mongoId: userData._id,
+        role: userData.role,
+        profilePic: userData.profilePic, 
       },
     });
   } catch (error) {
