@@ -1,7 +1,6 @@
 import express from "express";
-import { uploadVideo, getVideos, handleClick } from "../controllers/Videos.js";
+import { uploadVideo, getVideos, handleClick, getVideoById, getVideosByUserId } from "../controllers/Videos.js";
 import multer from "multer";
-import { verifyFirebaseToken } from "../middleware/verifyFirebaseToken.js";
 const router = express.Router();
 import fs from "fs";
 
@@ -35,5 +34,6 @@ const upload = multer({ storage });
 router.post("/upload", uploadVideo);
 router.post("/uploadFile", upload.single("file"), handleClick);
 router.get("/", getVideos);
+router.get("/:userId", getVideosByUserId);
 
 export default router;
